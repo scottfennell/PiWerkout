@@ -7,14 +7,15 @@ dist_meas = 0.00
 km_per_hour = 0
 rpm = 0
 elapse = 0
-sensor = 12
+sensor = 17
 pulse = 0
 start_timer = time.time()
 
 def init_GPIO():               # initialize GPIO
    GPIO.setmode(GPIO.BCM)
    GPIO.setwarnings(False)
-   GPIO.setup(sensor,GPIO.IN,GPIO.PUD_UP)
+   GPIO.setup(sensor,GPIO.IN)
+
 
 def calculate_elapse(channel):            # callback function
    global pulse, start_timer, elapse
