@@ -13,8 +13,8 @@ class IntervalMontior(threading.Thread):
     pulse = 0
     start_timer = time.time()
     running = True
-    cond = null
-    data = null
+    cond = None
+    data = None
     
     def __init__(self, cond, data):
         self.cond = cond
