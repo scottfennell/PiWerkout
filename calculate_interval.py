@@ -46,7 +46,7 @@ class IntervalMontior(threading.Thread):
     def calculate_speed(self, r_cm):
        if self.elapse !=0:                     # to avoid DivisionByZero error
           self.rpm = 1 / self.elapse * 60
-          self.circ_cm = (2 * math.pi) * self.r_cm         # calculate wheel circumference in CM
+          self.circ_cm = (2 * math.pi) * r_cm         # calculate wheel circumference in CM
           self.dist_km = self.circ_cm / 100000          # convert cm to km
           self.km_per_sec = self.dist_km / self.elapse      # calculate KM/sec
           self.km_per_hour = self.km_per_sec * 3600      # calculate KM/h
