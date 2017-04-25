@@ -8,6 +8,7 @@ app.config['SECRET_KEY'] = 'secret!'
 data = {'rpm': 0, 'history':{}}
 cond = threading.Condition()
 monitor = IntervalMontior(cond,data);
+monitor.start()
 
 @app.route('/')
 def hello_world():
