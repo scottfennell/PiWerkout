@@ -5,7 +5,7 @@ import threading
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
-data = {rpm: 0, history:{}}
+data = {'rpm': 0, 'history':{}}
 cond = threading.Condition()
 monitor = IntervalMontior(cond,data);
 
