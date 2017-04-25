@@ -1,3 +1,3 @@
 #!/bin/sh
 export FLASK_APP=server.py
-flask run
+python3 server.py
