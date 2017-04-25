@@ -35,7 +35,7 @@ def calculate_speed(r_cm):
       return km_per_hour
 
 def init_interrupt():
-   GPIO.add_event_detect(sensor, GPIO.FALLING, callback = calculate_elapse, bouncetime = 20)
+   GPIO.add_event_detect(sensor, GPIO.FALLING, callback = calculate_elapse, bouncetime = 200)
 
 if __name__ == '__main__':
    init_GPIO()
