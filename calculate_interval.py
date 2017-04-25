@@ -26,11 +26,11 @@ class IntervalMontior(threading.Thread):
         self.init_interrupt()
         while True:
             self.calculate_speed(20)   # call this function with wheel radius as parameter
-            cond.acquire()
+            self.cond.acquire()
             data.rpm = self.rpm
             data.history[time.time] = self.rpm
             print('rpm:{0:.0f}-RPM kmh:{1:.0f}-KMH dist_meas:{2:.2f}m pulse:{3}'.format(rpm,km_per_hour,dist_meas,pulse))
-            cond.release()
+            self.cond.release()
             sleep(0.1)
  
     def init_GPIO(self):               # initialize GPIO
