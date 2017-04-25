@@ -19,6 +19,7 @@ class IntervalMontior(threading.Thread):
     def __init__(self, cond, data):
         self.cond = cond
         self.data = data
+        super(IntervalMontior, self).__init__()
         
     def run(self):
         self.init_GPIO();
