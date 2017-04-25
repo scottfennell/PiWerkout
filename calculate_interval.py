@@ -25,7 +25,7 @@ class IntervalMontior(threading.Thread):
         self.init_GPIO();
         self.init_interrupt()
         while True:
-            calculate_speed(20)   # call this function with wheel radius as parameter
+            self.calculate_speed(20)   # call this function with wheel radius as parameter
             cond.acquire()
             data.rpm = self.rpm
             data.history[time.time] = self.rpm
@@ -54,6 +54,6 @@ class IntervalMontior(threading.Thread):
           return self.km_per_hour
 
     def init_interrupt(self):
-       GPIO.add_event_detect(self.sensor, GPIO.FALLING, callback = calculate_elapse, bouncetime = 200)
+       GPIO.add_event_detect(self.sensor, GPIO.FALLING, callback = self.calculate_elapse, bouncetime = 200)
 
   
