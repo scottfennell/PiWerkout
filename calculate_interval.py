@@ -27,9 +27,9 @@ class IntervalMontior(threading.Thread):
         while True:
             self.calculate_speed(20)   # call this function with wheel radius as parameter
             self.cond.acquire()
-            data.rpm = self.rpm
-            data.history[time.time] = self.rpm
-            print('rpm:{0:.0f}-RPM kmh:{1:.0f}-KMH dist_meas:{2:.2f}m pulse:{3}'.format(rpm,km_per_hour,dist_meas,pulse))
+            self.data.rpm = self.rpm
+            self.data.history[time.time] = self.rpm
+            print('rpm:{0:.0f}-RPM kmh:{1:.0f}-KMH dist_meas:{2:.2f}m pulse:{3}'.format(self.rpm,self.km_per_hour,self.dist_meas,self.pulse))
             self.cond.release()
             sleep(0.1)
  
