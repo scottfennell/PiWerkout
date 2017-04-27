@@ -29,7 +29,9 @@
       d3.select('#chart svg')
           .datum([{
             key: 'RPM',
-            values: data.rpm_per_sec
+            values: data.rpm_per_sec.map(function(val,idx) {
+              return [idx, val]
+            })
           }])
           .call(chart);
 
