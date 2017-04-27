@@ -20,7 +20,7 @@ def rpm_since(since):
     step = 0
     last_sec = 0;
     for time in monitor.get_history():
-        if (not since) or time > since
+        if (not since) or time > since:
             if last_time > 0:
                 elapsed = time - last_time # Time since the last second, 
                 rpm = 1 / elapsed * 60
