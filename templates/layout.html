@@ -27,7 +27,10 @@
           .tickFormat(d3.format(',.1%'));
 
       d3.select('#chart svg')
-          .datum(data.rpm_per_sec)
+          .datum([{
+            key: 'RPM'
+            values: data.rpm_per_sec
+          }])
           .call(chart);
 
       //TODO: Figure out a good way to do this automatically
