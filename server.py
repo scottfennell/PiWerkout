@@ -40,7 +40,7 @@ def rpm_since(since):
                 last_time = time
             
     
-    return jsonify(rpm_per_sec)
+    return jsonify({"rpm_per_sec": rpm_per_sec})
 
 
 if __name__ == '__main__':
