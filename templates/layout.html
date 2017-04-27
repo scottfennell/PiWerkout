@@ -9,6 +9,7 @@
   d3.json('/rpm/0', function(data) {
     console.log("Test this shit", data)
     nv.addGraph(function() {
+      console.log("Adding graph")
       var chart = nv.models.cumulativeLineChart()
                     .x(function(d) { return d[0] })
                     .y(function(d) { return d[1]/100 }) //adjusting, 100% is 1.00, not 100 as it is in the data
