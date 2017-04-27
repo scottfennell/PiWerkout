@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from calculate_interval import IntervalMontior
 import math
 
@@ -40,7 +40,7 @@ def rpm_since(since):
                 last_time = time
             
     
-    return 0
+    return jsonify(rpm_per_sec)
 
 
 if __name__ == '__main__':
