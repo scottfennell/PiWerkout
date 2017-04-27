@@ -10,21 +10,19 @@
     console.log("Test this shit", data)
     nv.addGraph(function() {
       console.log("Adding graph")
-      var chart = nv.models.cumulativeLineChart()
+      var chart = nv.models.lineChart()
                     .x(function(d) { return d[0] })
-                    .y(function(d) { return d[1]/100 }) //adjusting, 100% is 1.00, not 100 as it is in the data
+                    .y(function(d) { return d[1] }) //adjusting, 100% is 1.00, not 100 as it is in the data
                     .color(d3.scale.category10().range())
                     .useInteractiveGuideline(true)
                     ;
+      chart.xAxis     //Chart x-axis settings
+          .axisLabel('Time (s)')
+          .tickFormat(d3.format(',r'));
 
-       chart.xAxis
-          .tickValues([1078030800000,1122782400000,1167541200000,1251691200000])
-          .tickFormat(function(d) {
-              return d3.time.format('%x')(new Date(d))
-            });
-
-      chart.yAxis
-          .tickFormat(d3.format(',.1%'));
+      chart.yAxis     //Chart y-axis settings
+          .axisLabel('RPM')
+          .tickFormat(d3.format('0f'));
 
       d3.select('#chart svg')
           .datum([{
