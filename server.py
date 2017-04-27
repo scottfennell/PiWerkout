@@ -6,6 +6,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
 data = {'rpm': 0, 'history':{}}
+monitor = IntervalMontior(radius = 20)
 
 @app.route('/')
 def hello_world():
