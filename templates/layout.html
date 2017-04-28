@@ -2,51 +2,28 @@
 <title>Flaskr</title>
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.5/nv.d3.min.css" integrity="sha256-bmrwGjHOoD7azP+ZpGcOOitUNUGNRjwzjK1bZeTK6fI=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha256-rr9hHBQ43H7HSOmmNkxzQGazS/Khx+L8ZRHteEY1tQ4=" crossorigin="anonymous" />
+
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.8.0/d3.min.js"></script> -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" integrity="sha256-dsOXGNHAo/syFnazt+KTBsCQeRmlcW1XKL0bCK4Baec=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.5/nv.d3.min.js" integrity="sha256-TZsIPp2HRsOYQnuh40YjLEpRCvZ6h8lVBrvIm6uCeww=" crossorigin="anonymous"></script>
-<script type="text/javascript" charset="utf-8">
-  d3.json('/rpm/0', function(data) {
-    console.log("Test this shit", data)
-    nv.addGraph(function() {
-      console.log("Adding graph")
-      var chart = nv.models.lineChart()
-                    .x(function(d) { return d[0] })
-                    .y(function(d) { return d[1] }) //adjusting, 100% is 1.00, not 100 as it is in the data
-                    .color(d3.scale.category10().range())
-                    .useInteractiveGuideline(true)
-                    ;
-      chart.xAxis     //Chart x-axis settings
-          .axisLabel('Time (s)')
-          .tickFormat(d3.format(',r'));
-
-      chart.yAxis     //Chart y-axis settings
-          .axisLabel('RPM')
-          .tickFormat(d3.format('0f'));
-
-      d3.select('#chart svg')
-          .datum([{
-            key: 'RPM',
-            values: data.rpm_per_sec.map(function(val,idx) {
-              return [idx, val]
-            })
-          }])
-          .call(chart);
-
-      //TODO: Figure out a good way to do this automatically
-      nv.utils.windowResize(chart.update);
-
-      return chart;
-    });
-  });
-</script>
-<div class="page">
-  <h1>Flaskr</h1>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha256-+kIbbrvS+0dNOjhmQJzmwe/RILR/8lb/+4+PUNVW09k=" crossorigin="anonymous"></script>
+<script src="{{ url_for('static', filename='app.js')}}"></script>
+<div class="container">
   {% for message in get_flashed_messages() %}
     <div class="flash">{{ message }}</div>
   {% endfor %}
-  {% block body %}{% endblock %}
-  <div id="chart">
-    <svg style="height:500px" ></svg>
+  <div class="row">
+    <div id="chart" class="col-md-12">
+      <svg style="height:500px" ></svg>
+    </div>
   </div>
+  <div clas="row">
+    <div class="col-md-8">
+      {% block body %}{% endblock %}
+    </div>
+    <div class="col-md-8">
+      <p id="time"></p>
+    </div>
+  
 </div>

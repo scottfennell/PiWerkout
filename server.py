@@ -28,9 +28,9 @@ def rpm_since(since):
                 curr_sec = math.floor(time)
                 if (curr_sec - last_sec) > 1:
                     while last_sec < curr_sec:
-                        rpm_per_sec.append(rpm)
+                        rpm_per_sec.append((time - (curr_sec - last_sec),rpm))
                         last_sec += 1
-                rpm_per_sec.append(rpm)
+                rpm_per_sec.append((time,rpm))
                 
                 last_sec = curr_sec
                 last_time = time
