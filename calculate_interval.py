@@ -47,6 +47,10 @@ class IntervalMontior():
         
     def get_history(self):
         return self.history
+    
+    def clear_history(self):
+        self.history = []
+        return self.history
 
     def init_interrupt(self):
        GPIO.add_event_detect(self.sensor, GPIO.FALLING, callback = self.calculate_elapse, bouncetime = 200)
