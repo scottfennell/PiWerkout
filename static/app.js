@@ -1,10 +1,10 @@
 (function() {
   'use strict';
   var interval, updateGraph, since = 0, updateTime, width, height, g, x, y, line,
-    parseTime, margin, displaySeconds = 300, currentData = [], path;
-  
+    parseTime, margin, displaySeconds = 300, currentData = [], path, tickTime, startTime,
+    powerGauge, chartWidth, chartHeight;
   updateTime = function(data) {
-    var startDate = data.rpm_data[0].time * 1000;
+    var startDate = startTime * 1000;
     var current = Date.now();
     var elapsedMillis = current - startDate;
     var elapsedSeconds = Math.floor(elapsedMillis/1000);
@@ -14,58 +14,44 @@
     d3.select('#time').text(elapsedMin + ":" + elapsedSeconds + "." + elapsedMillis);
   };
   
-  updateGraph = function(data) {
-    
-    console.log("data", data.rpm_per_sec)
-    nv.addGraph(function() {
-      var chart = nv.models.lineChart()
-                    .x(function(d) { return d[0]; })
-                    .y(function(d) { return d[1]; }) //adjusting, 100% is 1.00, not 100 as it is in the data
-                    .color(d3.scale.category10().range())
-                    .useInteractiveGuideline(true)
-                    ;
-      chart.xAxis     //Chart x-axis settings
-          .axisLabel('Time (s)')
-          .tickFormat(d3.format(',r'));
 
-      chart.yAxis     //Chart y-axis settings
-          .axisLabel('RPM')
-          .tickFormat(d3.format('0f'));
-
-      d3.select('#chart svg')
-          .datum([{
-            key: 'RPM',
-            values: data.rpm_per_sec.map(function(val,idx) {
-              return val
-            })
-          }])
-          .call(chart);
-
-      //TODO: Figure out a good way to do this automatically
-      nv.utils.windowResize(chart.update);
-
-      return chart;
-    });
-  };
   $(document).ready(function(){
-    $('#chart').css({
-      width: 750,
-      height: 500
-    });
-    
-    for(var i = 0; i < displaySeconds; i++) {
-      currentData.push({
-        rpm: 0,
-        time: 0
-      });
-    }
-    
+    // 
+    chartWidth = $('#chart').width();
+    chartHeight = chartWidth / 1.6;
+    $('#chart').height(chartHeight);
+    //   width: 750,
+    //   height: 500
+    // });
+    // for(var i = 0; i < displaySeconds; i++) {
+    //   currentData.push({
+    //     rpm: 0,
+    //     time: 0
+    //   });
+    // }
+    // 
     lineChart();
+    
+    powerGauge = window.gauge('#power-gauge', {
+  		size: 400,
+  		clipWidth: 400,
+  		clipHeight: 400,
+  		ringWidth: 60,
+  		maxValue: 10,
+  		transitionMs: 4000,
+  	});
+    console.log("PoserG", powerGauge);
+  	powerGauge.render();
+    	
   });
   
   interval = setInterval(function() {
+    powerGauge.update(Math.random() * 10);
     d3.json('/rpm/'+since, function(data) {
       if (data.rpm_data && data.rpm_data.length > 0){
+        if (!startTime) {
+          startTime = data.rpm_data[0].time;
+        }
         updateTime(data);
         // updateGraph(data);
         // 
@@ -83,20 +69,20 @@
         
         if (newData.length > 0) {
           newData.forEach(function(point) {
+            point.offset = point.time - startTime;
+            console.log("Adding point " + point.offset + ", " + point.rpm)
             currentData.push(point);
             since = point.time;
           });
         }
-        console.log("Add data", currentData)
-        // lineChartData(null, newData);
       }
-      //tick();
+      tick();
     });
   },1000);
   
-  
   function lineChart() {
     var svg = d3.select("#chart svg");
+    svg.attr('width', chartWidth).attr('height', chartHeight);
     margin = {top: 20, right: 20, bottom: 30, left: 50};
     width = +svg.attr("width") - margin.left - margin.right;
     height = +svg.attr("height") - margin.top - margin.bottom;
@@ -104,7 +90,7 @@
 
     parseTime = d3.timeParse("%d-%b-%y");
 
-    x = d3.scaleTime()
+    x = d3.scaleLinear() //Was scaleTime until 0-300 scale
         .domain([0, displaySeconds-1])
         .rangeRound([0, width]);
 
@@ -113,7 +99,7 @@
         .rangeRound([height, 0]);
     line = d3.line()
         .x(function(d, i) { 
-          return x(i); 
+          return x(d.offset); 
         })
         .y(function(d, i) { 
           return y(d.rpm); 
@@ -136,27 +122,41 @@
         .attr("text-anchor", "end")
         .text("Price ($)");
 
-    path = g.append("path")
+    path = g.append("g")
+        .attr("clip-path", "url(#clip)")
+      .append("path")
+        .attr("id", "rpmpath")
         .datum(currentData)
+        .attr("class", "line")
         .attr("fill", "none")
         .attr("stroke", "steelblue")
         .attr("stroke-linejoin", "round")
         .attr("stroke-linecap", "round")
         .attr("stroke-width", 1.5)
-        .attr("d", line);
+        .attr("d", line)
+      .transition()
+        .duration(500)
+        .ease(d3.easeLinear);
   }
   
   function tick() {
     // Push a new data point onto the back.
     // Redraw the line.
-    d3.select(path)
-        .attr("d", line)
-        .attr("transform", null);
-    // Slide it to the left.
-    d3.active(path)
-        .attr("transform", "translate(" + x(-1) + ",0)")
-      .transition();
+    var lastPoint = currentData[currentData.length-1];
+    var lastTickTime = tickTime;
+    var gapTime = lastPoint.time - startTime - displaySeconds;
+    var tnode = document.getElementById('rpmpath');
+    
+    d3.select(tnode)
+      .attr("d", line);
+    
+    if (gapTime > 0) {
+      d3.select(tnode)
+        .transition()
+        .attr("transform", "translate(" + x(-1 * gapTime) + ",0)");
+    }
+
     // Pop the old data point off the front.
-    data.shift();
+    // currentData.shift();
   }
 }());
