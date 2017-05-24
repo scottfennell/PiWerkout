@@ -3,16 +3,7 @@
   var interval, updateGraph, since = 0, updateTime, width, height, g, x, y, line,
     parseTime, margin, displaySeconds = 300, currentData = [], path, tickTime, startTime,
     powerGauge, chartWidth, chartHeight;
-  updateTime = function(data) {
-    var startDate = startTime * 1000;
-    var current = Date.now();
-    var elapsedMillis = current - startDate;
-    var elapsedSeconds = Math.floor(elapsedMillis/1000);
-    elapsedMillis = Math.floor(elapsedMillis - (elapsedSeconds * 1000));
-    var elapsedMin = Math.floor(elapsedSeconds / 60);
-    elapsedSeconds = Math.floor(elapsedSeconds - elapsedMin * 60);
-    d3.select('#time').text(elapsedMin + ":" + elapsedSeconds + "." + elapsedMillis);
-  };
+  
   
 
   $(document).ready(function(){
@@ -20,24 +11,14 @@
     chartWidth = $('#chart').width();
     chartHeight = chartWidth / 1.6;
     $('#chart').height(chartHeight);
-    //   width: 750,
-    //   height: 500
-    // });
-    // for(var i = 0; i < displaySeconds; i++) {
-    //   currentData.push({
-    //     rpm: 0,
-    //     time: 0
-    //   });
-    // }
-    // 
     lineChart();
     
-    powerGauge = window.gauge('#power-gauge', {
-  		size: 400,
-  		clipWidth: 400,
-  		clipHeight: 400,
-  		ringWidth: 60,
-  		maxValue: 10,
+    powerGauge = window.gauge('#powergauge', {
+  		size: 300,
+  		clipWidth: 300,
+  		clipHeight: 300,
+  		ringWidth: 40,
+  		maxValue: 120,
   		transitionMs: 4000,
   	});
     console.log("PoserG", powerGauge);
@@ -46,17 +27,15 @@
   });
   
   interval = setInterval(function() {
-    powerGauge.update(Math.random() * 10);
     d3.json('/rpm/'+since, function(data) {
+      var last, newData, lastRpm;
       if (data.rpm_data && data.rpm_data.length > 0){
         if (!startTime) {
           startTime = data.rpm_data[0].time;
         }
         updateTime(data);
         // updateGraph(data);
-        // 
-        var last = data.rpm_data.length;
-        var newData;
+        last = data.rpm_data.length;
         if (since > 0) {
           newData = data.rpm_data.filter(function (point) {
             if(point.time > since) {
@@ -70,15 +49,19 @@
         if (newData.length > 0) {
           newData.forEach(function(point) {
             point.offset = point.time - startTime;
-            console.log("Adding point " + point.offset + ", " + point.rpm)
+            lastRpm = point.rpm;
             currentData.push(point);
             since = point.time;
           });
-        }
+          if (lastRpm !== undefined) {
+            powerGauge.update(lastRpm);
+          }
+        } 
       }
       tick();
     });
-  },1000);
+    tick();
+  }, 1000);
   
   function lineChart() {
     var svg = d3.select("#chart svg");
@@ -140,23 +123,29 @@
   }
   
   function tick() {
-    // Push a new data point onto the back.
-    // Redraw the line.
-    var lastPoint = currentData[currentData.length-1];
-    var lastTickTime = tickTime;
-    var gapTime = lastPoint.time - startTime - displaySeconds;
-    var tnode = document.getElementById('rpmpath');
-    
-    d3.select(tnode)
-      .attr("d", line);
+    var current = Date.now(), 
+      elapsedMillis = current - startTime,
+      gapTime,
+      lineNode;
+  
+    d3.select('#time').text(millisToMinutes(elapsedMillis));
+
+    gapTime = (current / 1000) - startTime - displaySeconds;
+    lineNode = document.getElementById('rpmpath');
     
     if (gapTime > 0) {
-      d3.select(tnode)
+      d3.select(lineNode)
+        .attr("d", line)
         .transition()
         .attr("transform", "translate(" + x(-1 * gapTime) + ",0)");
     }
-
-    // Pop the old data point off the front.
-    // currentData.shift();
+  }
+  
+  function millisToMinutes(elapsedMillis) {
+    var elapsedSeconds = Math.floor(elapsedMillis/1000);
+    elapsedMillis = Math.floor(elapsedMillis - (elapsedSeconds * 1000));
+    var elapsedMin = Math.floor(elapsedSeconds / 60);
+    elapsedSeconds = Math.floor(elapsedSeconds - elapsedMin * 60);
+    return elapsedMin + ":" + elapsedSeconds;
   }
 }());

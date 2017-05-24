@@ -34,7 +34,7 @@ def compileRpm():
         #TODO  because this only gets run on read
         last_time = rpm_data[-1]['time']
         last_sec = math.floor(last_time)
-    print( history)
+        
     for time in history:    
         if last_time > 0:
             elapsed = time - last_time # Time since the last second, 
@@ -52,6 +52,7 @@ def compileRpm():
             last_sec = math.floor(time)
             last_time = time
             rpm_data.append({"time": time, "rpm": 0})
+    
     
     monitor.clear_history()
     
