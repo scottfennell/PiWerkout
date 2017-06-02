@@ -34,7 +34,11 @@ def compileRpm():
         #TODO  because this only gets run on read
         last_time = rpm_data[-1]['time']
         last_sec = math.floor(last_time)
-        
+    
+    #If the time gap between the last history is within a threshhold
+    #Loop over the seconds (or maybe minutes)
+    #Adding in data points of zero when we have no data
+    
     for time in history:    
         if last_time > 0:
             elapsed = time - last_time # Time since the last second, 

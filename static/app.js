@@ -21,7 +21,6 @@
   		maxValue: 120,
   		transitionMs: 4000,
   	});
-    console.log("PoserG", powerGauge);
   	powerGauge.render();
     	
   });
@@ -33,8 +32,6 @@
         if (!startTime) {
           startTime = data.rpm_data[0].time;
         }
-        updateTime(data);
-        // updateGraph(data);
         last = data.rpm_data.length;
         if (since > 0) {
           newData = data.rpm_data.filter(function (point) {
@@ -122,30 +119,31 @@
         .ease(d3.easeLinear);
   }
   
-  function tick() {
-    var current = Date.now(), 
-      elapsedMillis = current - startTime,
+  function tick(){
+    var current = (Date.now() / 1000),
+      elapsedSeconds = current - startTime,
       gapTime,
       lineNode;
-  
-    d3.select('#time').text(millisToMinutes(elapsedMillis));
-
-    gapTime = (current / 1000) - startTime - displaySeconds;
+    d3.select('#time').text(secondsToMinutes(elapsedSeconds));
+    gapTime = current - startTime - displaySeconds;
     lineNode = document.getElementById('rpmpath');
-    
     if (gapTime > 0) {
       d3.select(lineNode)
         .attr("d", line)
         .transition()
         .attr("transform", "translate(" + x(-1 * gapTime) + ",0)");
+    } else {
+      d3.select(lineNode)
+        .attr("d", line);
     }
   }
   
-  function millisToMinutes(elapsedMillis) {
-    var elapsedSeconds = Math.floor(elapsedMillis/1000);
-    elapsedMillis = Math.floor(elapsedMillis - (elapsedSeconds * 1000));
+  function secondsToMinutes(elapsedSeconds) {
     var elapsedMin = Math.floor(elapsedSeconds / 60);
     elapsedSeconds = Math.floor(elapsedSeconds - elapsedMin * 60);
+    if (elapsedSeconds < 10) {
+      elapsedSeconds = "0" + elapsedSeconds;
+    }
     return elapsedMin + ":" + elapsedSeconds;
   }
 }());
