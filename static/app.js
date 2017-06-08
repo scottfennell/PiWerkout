@@ -28,6 +28,9 @@
   interval = setInterval(function() {
     d3.json('/rpm/'+since, function(data) {
       var last, newData, lastRpm;
+      if (data.rot_count) {
+        calculateDistance(data.rot_count);
+      }
       if (data.rpm_data && data.rpm_data.length > 0){
         if (!startTime) {
           startTime = data.rpm_data[0].time;
@@ -57,8 +60,19 @@
       }
       tick();
     });
-    tick();
+    tick(); 
   }, 1000);
+  
+  function calculateDistance(rotations) {
+    if (!rotations) {
+      rotations = 0;
+    }
+    var feet =  ((26*3.1415)/12) * rotations;
+    
+    d3.select('#distance').text(feet/5280 + " miles");
+    
+    
+  }
   
   function lineChart() {
     var svg = d3.select("#chart svg");
