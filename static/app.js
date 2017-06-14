@@ -31,6 +31,12 @@
       if (data.rot_count) {
         calculateDistance(data.rot_count);
       }
+      
+      if (data.velocity) {
+        var mph = 2.23694 * data.velocity;
+        d3.select('#velocity').text(data.velocity + ' m/s; ' + mph + ' mph');
+      }
+      
       if (data.rpm_data && data.rpm_data.length > 0){
         if (!startTime) {
           startTime = data.rpm_data[0].time;
@@ -70,6 +76,7 @@
     var feet =  ((26*3.1415)/12) * rotations;
     
     d3.select('#distance').text(feet/5280 + " miles");
+    
     
     
   }

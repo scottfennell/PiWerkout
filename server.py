@@ -1,5 +1,6 @@
 from flask import Flask, render_template, jsonify
 from calculate_interval import IntervalMontior
+from stats import WorkoutStats
 import math
 
 app = Flask(__name__)
@@ -7,6 +8,8 @@ app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
 data = {'rpm': 0, 'history':{}, 'rot_count': 0}
 monitor = IntervalMontior(radius = 20)
+workoutStats = WorkoutStats()
+
 rpm_data = []
 state = {'start_time': 0}
 
@@ -31,6 +34,7 @@ def clear_data():
 def compileRpm():
     last_time = 0
     last_sec = 0
+    last_rpm = 0
     history = monitor.get_history()
     if len(history) > 0 and len(rpm_data) > 0:
         last_time = rpm_data[-1]['time']
@@ -46,6 +50,7 @@ def compileRpm():
     
     for time in history:    
         if last_time > 0:
+            rpm = 0
             elapsed = time - last_time # Time since the last second, 
             if (elapsed > 0):
                 rpm = 1 / elapsed * 60
@@ -56,6 +61,7 @@ def compileRpm():
                     last_sec += 1
             rpm_data.append({"time": time, "rpm": rpm})
             
+            last_rpm = rpm
             last_sec = curr_sec
             last_time = time
         else:
@@ -66,6 +72,7 @@ def compileRpm():
         data["rot_count"] += 1
     
     data["rpm_data"] = rpm_data
+    data["velocity"] = workoutStats.calculate_speed(last_rpm, 10)
     
     monitor.clear_history()
     
