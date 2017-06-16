@@ -1,0 +1,5 @@
+Flask-Cors==3.0.2
+Flask-SocketIO==2.8.6
+python-engineio==1.4.0
+python-socketio==1.7.4
+six==1.10.0
