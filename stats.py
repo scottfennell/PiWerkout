@@ -12,6 +12,7 @@ class WorkoutStats():
     air_density = 1.226 #kg/m^3 1.225 sea level 15c
     average_velocity = 10 #m/s for calculating resistance
     watts_per_rpm = 140 / 80;
+    bicycle_drag = 0.03;
 
     
     def __init__(self):
@@ -33,7 +34,7 @@ class WorkoutStats():
         
         f_drag = 0.5 * self.air_drag * self.air_density * (self.average_velocity ^ 2)
         
-        total_resistance = g_force + r_force + f_drag
+        total_resistance = (g_force + r_force + f_drag) * (1 - self.bicycle_drag)
         watts = (self.watts_per_rpm * rpm)
         velocity = watts / total_resistance
         

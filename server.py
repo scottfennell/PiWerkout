@@ -1,9 +1,11 @@
 from flask import Flask, render_template, jsonify
+from flask_cors import CORS, cross_origin
 from calculate_interval import IntervalMontior
 from stats import WorkoutStats
 import math
 
 app = Flask(__name__)
+CORS(app)
 app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
 data = {'rpm': 0, 'history':{}, 'rot_count': 0}

@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
 import { ApiService } from './shared';
+import { BicycleService } from './shared/bicycle.service';
+import { ConfigService } from './shared/config.service';
 import { routing } from './app.routing';
 
 
@@ -33,7 +35,9 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     AboutComponent
   ],
   providers: [
-    ApiService
+    ApiService,
+    BicycleService,
+    ConfigService
   ],
   bootstrap: [AppComponent]
 })
