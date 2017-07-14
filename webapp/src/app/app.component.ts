@@ -21,7 +21,7 @@ export class AppComponent {
   ngOnInit() {
     console.log('Hello Home');
     this.bicycleService.getBicycleData().subscribe(data => {
-      console.log("Recieved Data!", data);
+      console.log('Recieved Data!', data.length);
     })
     
   }

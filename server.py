@@ -21,19 +21,19 @@ def hello_world():
     
 @app.route('/rpm/<int:since>')
 def rpm_since(since):
-    compileRpm()
+    compileRpm(since)
     return jsonify(data)
 
 @app.route('/rpm/<float:since>')
 def rpm_since_float(since):
-    compileRpm()
+    compileRpm(since)
     return jsonify(data)
 
 def clear_data():
     print("clearing rpm data");
     rpm_data = []
 
-def compileRpm():
+def compileRpm(since):
     last_time = 0
     last_sec = 0
     last_rpm = 0
@@ -73,7 +73,11 @@ def compileRpm():
         
         data["rot_count"] += 1
     
-    data["rpm_data"] = rpm_data
+    if (since is not None):
+        data["rpm_data"] = [a for a in rpm_data if a["time"] > since]
+    else:
+        data["rpm_data"] = rpm_data
+        
     data["velocity"] = workoutStats.calculate_speed(last_rpm, 10)
     
     monitor.clear_history()

@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { AboutComponent } from './about/about.component';
+import { ChartComponent } from './chart/chart.component';
 import { ApiService } from './shared';
 import { BicycleService } from './shared/bicycle.service';
 import { ConfigService } from './shared/config.service';
@@ -14,7 +15,7 @@ import { routing } from './app.routing';
 
 import { MaterialModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from "@angular/flex-layout";
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
@@ -32,7 +33,8 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
   declarations: [
     AppComponent,
     HomeComponent,
-    AboutComponent
+    AboutComponent,
+    ChartComponent
   ],
   providers: [
     ApiService,
