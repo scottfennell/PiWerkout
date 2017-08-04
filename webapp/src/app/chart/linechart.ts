@@ -11,10 +11,12 @@ export class LineChart {
     private g;
     private line;
     private path;
+    private average;
     private x;
     private y;
     private parseTime;
     private displaySeconds: number = 1800;
+    private averageRpm: number = 0;
 
     private currentData: object[];
     private startTime: number;
@@ -44,7 +46,7 @@ export class LineChart {
         this.line = d3.line<BicycleData>()
             .x((d: BicycleData): number => this.x(d.offset))
             .y((d: BicycleData) => this.y(d.rpm));
-
+        
         this.g.append('g')
             .attr('transform', 'translate(0,' + this.height + ')')
             .call(d3.axisBottom(this.x))
@@ -60,6 +62,26 @@ export class LineChart {
             .attr('dy', '0.71em')
             .attr('text-anchor', 'end')
             .text('Price ($)');
+        
+        this.average = this.g.append('g')
+            .append('line')
+            .attr('id', 'average')
+            .attr('x1', 0)
+            .attr('x2', this.displaySeconds-1)
+            .attr('y1', this.y(80))
+            .attr('y2', this.y(80))
+            .style('stroke', "rgb(188,35,99)")
+            
+            // .attr('fill', 'none');
+
+        //  svg.append("svg:line")width
+        //     .attr("x1", 0)
+        //     .attr("x2", width)
+        //     .attr("y1", before_meal)
+        //     .attr("y2", before_meal)
+        //     .style("stroke", "rgb(189, 189, 189)");
+
+        
         this.path = this.g.append('g')
             .attr('clip-path', 'url(#clip)')
             .append('path')
@@ -83,7 +105,6 @@ export class LineChart {
         gapTime,
         lineNode,
         lastRpm
-        console.log('Lengthi is ', newData.length);
         if (newData.length > 0) {
             newData.forEach((point: BicycleData) => {
                 if (!this.startTime) {
@@ -92,8 +113,14 @@ export class LineChart {
 
                 point.offset = point.time - this.startTime;
                 lastRpm = point.rpm;
+                if (point.averageRpm) {
+                    this.averageRpm = point.averageRpm;
+                }
                 this.currentData.push(point);
-          });
+            });
+            
+            
+            this.average.attr('y1', this.y(this.averageRpm)).attr('y2',  this.y(this.averageRpm));
         } 
         
         gapTime = current - this.startTime - this.displaySeconds;
@@ -103,9 +130,13 @@ export class LineChart {
                 .attr('d', this.line)
                 .transition()
                 .attr('transform', 'translate(' + this.x(-1 * gapTime) + ',0)');
+            
+            
+            
         } else {
             this.path
                 .attr('d', this.line);
         }
+
     }
 }

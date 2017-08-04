@@ -17,6 +17,7 @@ export class BicycleService {
 
     private connection: Observable<ServerResponse>;
     private lastDataTime: number;
+    private rpmSum: number = 0;
     
     constructor(public http: Http, public config:ConfigService) {
         this.lastDataTime = 0;
@@ -68,10 +69,18 @@ export class BicycleService {
     private extractData(res: Response) {
         let data = res.json();
         if (data.rpm_data && data.rpm_data.length > 0) {
+
+          data.rpm_data.forEach(element => {
+              this.rpmSum += element.rpm
+          });
+
           let last = data.rpm_data[data.rpm_data.length - 1];
+          last.rot_count = data.rot_count;
+          last.velocity = data.velocity;
           this.lastDataTime  = last.time;
+          last.averageRpm = this.rpmSum / data.rot_count;
         }
-        return res.json();
+        return data;
     }
 }
 
@@ -85,4 +94,5 @@ export class BicycleData {
   mps: number;
   series: number;
   offset: number;
+  averageRpm: number;
 }

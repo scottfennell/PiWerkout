@@ -7,12 +7,12 @@ class WorkoutStats():
     default_grade = 0.1
     gravity = 9.8067 #m/s^2
     weight = 98 #kg
-    resistance = 0.005 #Bumpiness of the road
-    air_drag = 0.52 # Drag coef * area
+    resistance = 0.01 #Bumpiness of the road
+    air_drag = 0.62 # Drag coef * area
     air_density = 1.226 #kg/m^3 1.225 sea level 15c
     average_velocity = 10 #m/s for calculating resistance
-    watts_per_rpm = 140 / 80;
-    bicycle_drag = 0.03;
+    watts_per_rpm = 1.75; 
+    bicycle_drag = 0.05;
 
     
     def __init__(self):
@@ -34,10 +34,10 @@ class WorkoutStats():
         
         f_drag = 0.5 * self.air_drag * self.air_density * (self.average_velocity ^ 2)
         
+        
         total_resistance = (g_force + r_force + f_drag) * (1 - self.bicycle_drag)
         watts = (self.watts_per_rpm * rpm)
         velocity = watts / total_resistance
-        
         return velocity
         
         

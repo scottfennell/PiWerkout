@@ -19,18 +19,17 @@ export class GaugeChart {
 	
 	constructor(container, configuration = {}) {
 		this.config = {
-			size						: 400,
 			width						: 100,
 			height						: 100,
 			ringInset					: 20,
-			ringWidth					: 20,
+			ringWidth					: 100,
 			
 			pointerWidth				: 10,
 			pointerTailLength			: 5,
 			pointerHeadLengthPercent	: 0.9,
 			
 			minValue					: 0,
-			maxValue					: 100,
+			maxValue					: 150,
 			
 			minAngle					: -90,
 			maxAngle					: 90,
@@ -63,11 +62,9 @@ export class GaugeChart {
 		Object.apply(this.config, configuration);
 		this.config.width = this.container.clientWidth;
 		this.config.height = (this.container.clientWidth / 16) * 9;
-
-		this.config.size = Math.min(this.config.width, this.config.height);
   		
   		this.range = this.config.maxAngle - this.config.minAngle;
-  		this.r = this.config.size / 2;
+  		this.r = this.config.width / 2;
   		this.pointerHeadLength = Math.round(this.r * this.config.pointerHeadLengthPercent);
 
   		// a linear scale that maps domain values to a percent from 0..1
