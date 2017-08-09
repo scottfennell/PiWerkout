@@ -60,8 +60,18 @@ export class GaugeChart {
   	
   	public configure(configuration) {
 		Object.apply(this.config, configuration);
-		this.config.width = this.container.clientWidth;
-		this.config.height = (this.container.clientWidth / 16) * 9;
+		// this.config.width = this.container.clientWidth;
+		// this.config.height = this.container.clientHeight;//(this.container.clientWidth / 16) * 9;
+		let x = this.container.clientHeight * 1.77
+		let y = this.container.clientWidth / 1.77
+		if (y > this.container.clientHeight) {
+			//If the calculated height is heigher than the contianer, use the containers height and calculated width
+			this.config.width = x;
+			this.config.height = this.container.clientHeight;
+		} else {
+			this.config.width = this.container.clientWidth;
+			this.config.height = y;
+		}
   		
   		this.range = this.config.maxAngle - this.config.minAngle;
   		this.r = this.config.width / 2;

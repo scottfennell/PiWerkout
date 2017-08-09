@@ -24,7 +24,7 @@ export class LineChart {
 
     constructor(element: HTMLElement) {
         this.chartWidth = element.clientWidth;
-        this.chartHeight = (element.clientWidth / 16) * 9;
+        this.chartHeight = element.clientHeight; //(element.clientWidth / 16) * 9;
         var svg = d3.select(element).append('svg');
         svg.attr('width', this.chartWidth).attr('height', this.chartHeight);
         this.margin = {top: 20, right: 20, bottom: 30, left: 50};

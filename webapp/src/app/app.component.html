@@ -4,20 +4,7 @@
     <button md-button [routerLink]="['about']">About</button>
   </md-toolbar>
   <div class='main' fxFlex fxLayout="row">
-    <div fxFlex class='app-content'>
-      <md-card fxLayout="column">
-        <chart type='line' fxFlexFill></chart>
-      </md-card>
-    </div>
-    <div fxFlex class='app-content'>
-      <md-card>
-        <chart type='gauge' fxFlexFill></chart>
-      </md-card>      
-
-    </div>
-    <div fxFlex class='app-content'>
-      <router-outlet></router-outlet>      
-    </div>
+    <router-outlet></router-outlet>
   </div>
   <footer fxFlex="20px">
     <a [href]="url">Webpack Angular 2 Starter</a>
