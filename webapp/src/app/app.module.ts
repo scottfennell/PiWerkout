@@ -5,7 +5,6 @@ import { FormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { AboutComponent } from './about/about.component';
 import { ChartComponent } from './chart/chart.component';
 import { ApiService } from './shared';
 import { BicycleService } from './shared/bicycle.service';
@@ -33,7 +32,6 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
   declarations: [
     AppComponent,
     HomeComponent,
-    AboutComponent,
     ChartComponent
   ],
   providers: [

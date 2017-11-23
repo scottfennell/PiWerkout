@@ -40,8 +40,6 @@ export class BicycleService {
                     }
                 })
                 .retryWhen(errors => {
-                    console.log("what", errors);
-
                     return errors.scan((errorCount, err) => {
                         if (err !== 'no change') {
                             // A real error occurred. Don't retry it

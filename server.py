@@ -9,23 +9,25 @@ CORS(app)
 app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
 data = {'rpm': 0, 'history':{}, 'rot_count': 0}
-monitor = IntervalMontior(radius = 20)
+monitor = IntervalMontior(radius=20)
 workoutStats = WorkoutStats()
-
 rpm_data = []
 state = {'start_time': 0}
 
 @app.route('/')
-def hello_world():
+def index():
+    """ Return the index """
     return render_template('index.html', rpm=monitor.get_rpm())
     
 @app.route('/rpm/<int:since>')
 def rpm_since(since):
+    """ return the rpm data since a time, since is epoch time """
     compileRpm(since)
     return jsonify(data)
 
 @app.route('/rpm/<float:since>')
 def rpm_since_float(since):
+    """ Rpm since, but since is a float and includes microseconds """
     compileRpm(since)
     return jsonify(data)
 
