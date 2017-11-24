@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { BicycleService, BicycleDataStats } from '../shared/bicycle.service';
+// import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'my-home',
@@ -8,32 +9,24 @@ import { BicycleService, BicycleDataStats } from '../shared/bicycle.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
-  velocity: string = '';
-  miles: string = '';
-  mph: number = 0;
-  mps: number = 0;
-  distance: number = 0;
-  averageSpeed: number = 0;
+  public velocity: string = '';
+  public miles: string = '';
+  public mph: number = 0;
+  public mps: number = 0;
+  public distance: number = 44;
+  public averageSpeed: number = 44;
 
   constructor(private bicycleService: BicycleService) {}
 
   ngOnInit() {
-    console.log('Hello Home');
-    this.bicycleService.getBicycleData().subscribe(data => {
-      this.calcStats(data);
-      
-    })
-    
+    this.bicycleService.getBicycleStats().subscribe((stats) => this.calcStats(stats));
   }
 
-  calcStats(lastData) {
-    if (lastData.velocity) {
-      let stats: BicycleDataStats = this.bicycleService.getStats();
-      
-      this.mph = Math.round(2.23694 * lastData.velocity);
-      this.mps = Math.round(lastData.velocity);
-      this.distance = stats.distance;
-      this.averageSpeed = stats.averageSpeed;
-    }
+  calcStats(stats: BicycleDataStats) {
+    console.log("Stats", stats, this);
+    // this.mph = Math.round(2.23694 * lastData.velocity);
+    // this.mps = Math.round(lastData.velocity);
+    this.distance = stats.distance;
+    this.averageSpeed = stats.averageSpeed;
   }
 }

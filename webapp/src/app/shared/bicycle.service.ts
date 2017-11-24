@@ -15,7 +15,7 @@ import 'rxjs/add/operator/scan';
 export class BicycleService {
     title = 'Angular 2';
 
-    private connection: Observable<ServerResponse>;
+    private connection: Observable<BicycleDataStats>;
     private lastDataTime: number;
     private rpmSum: number = 0;
     private stats: BicycleDataStats;
@@ -25,20 +25,13 @@ export class BicycleService {
         this.stats = new BicycleDataStats();
     }
   
-    private connect(): Observable<ServerResponse> {
+    private connect(): Observable<BicycleDataStats> {
         if (!this.connection) {
             this.connection = Observable.interval(1000)
                 .concatMap(() => {
                     return this.http.get(`${this.config.dataUrl}/${this.lastDataTime}`);
                 })
-                .map((result) => {
-                    let data = this.extractData(result);
-                    if (data.rpm_data.length === 0) {
-                        throw 'no change';
-                    } else {
-                        return data;
-                    }
-                })
+                
                 .retryWhen(errors => {
                     return errors.scan((errorCount, err) => {
                         if (err !== 'no change') {
@@ -49,7 +42,11 @@ export class BicycleService {
                         }
                     }, 0)
                     .concatMap(errorCount => Observable.timer(errorCount * 1000))
-                }).share();
+                })
+                .map((result) => {
+                    return this.extractData(result);
+                })
+                .share();
         } 
         return this.connection;
     }
@@ -58,6 +55,10 @@ export class BicycleService {
         return this.connect().map((b) => {
           return b.rpm_data;
         });
+    }
+
+    public getBicycleStats(): Observable<BicycleDataStats> {
+        return this.connect();
     }
 
     public getCurrentRpm() {
@@ -70,42 +71,41 @@ export class BicycleService {
         return this.stats;
     }
     
-    private extractData(res: Response) {
+    private extractData(res: Response): BicycleDataStats {
         let data = res.json();
-        if (data.rpm_data && data.rpm_data.length > 0) {
-            
-            if (!this.stats.startTime) {
-                this.stats.startTime = data.time;
+        if (data.rpm_data) {
+            let rpmData = data.rpm_data.filter((n) => n.time > this.lastDataTime)
+            if (rpmData.length > 0) {
+                
+                if (!this.stats.startTime) {
+                    this.stats.startTime = rpmData[0].time;
+                }
+                
+                let last = rpmData[rpmData.length - 1];
+                last.rot_count = data.rot_count || 1;
+                last.velocity = data.velocity;
+                this.lastDataTime  = last.time;
+                last.averageRpm = this.rpmSum / data.rot_count;
+                
+
+                //Calculate stats
+                rpmData.forEach(element => {
+                    
+                    this.rpmSum += element.rpm
+                    this.stats.n++;
+                    this.stats.averageRpm = last.averageRpm;
+                    this.stats.rotationCount = data.rot_count;
+                    this.stats.averageSpeed = this.stats.averageSpeed + ((data.velocity - this.stats.averageSpeed) / this.stats.n);
+                    this.stats.distance = (this.stats.averageSpeed * (element.time - this.stats.startTime)) * 0.000621371;
+                });
+                
             }
-
-            data.rpm_data.forEach(element => {
-                this.rpmSum += element.rpm
-            });
-
-            let last = data.rpm_data[data.rpm_data.length - 1];
-            last.rot_count = data.rot_count;
-            last.velocity = data.velocity;
-            this.lastDataTime  = last.time;
-            last.averageRpm = this.rpmSum / data.rot_count;
-
-            //Calculate stats
-
-
-            data.rpm_data.forEach(element => {
-                this.rpmSum += element.rpm
-                this.stats.n++;
-                this.stats.averageRpm = this.stats.averageRpm + ((element.rpm - this.stats.averageRpm) / this.stats.n);
-                this.stats.rotationCount = data.rot_count;
-                this.stats.averageSpeed = this.stats.averageSpeed + ((data.velocity - this.stats.averageSpeed) / this.stats.n);
-                this.stats.distance = Math.round((this.stats.averageSpeed * Math.round((this.stats.startTime - element.time)/1000)) * 0.000621371);
-            });
+            this.stats.rpm_data = rpmData;
+            // data.rpm_data = rpmData;
         }
-        return data;
-    }
-}
 
-class ServerResponse {
-  rpm_data: BicycleData[]
+        return this.stats;
+    }
 }
 
 export class BicycleData {
@@ -125,4 +125,5 @@ export class BicycleDataStats {
     startTime: number = 0; //millis or seconds epoch
     distance: number = 0; //miles
     n: number = 0;
+    rpm_data: BicycleData[];
 } 

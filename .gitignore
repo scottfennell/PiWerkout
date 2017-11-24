@@ -1,3 +1,5 @@
 *.pyc
 .remote-sync.json
 /webapp/node-modules
+/.vscode
+/env

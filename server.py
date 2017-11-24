@@ -8,11 +8,11 @@ app = Flask(__name__)
 CORS(app)
 app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
-data = {'rpm': 0, 'history':{}, 'rot_count': 0}
-monitor = IntervalMontior(radius=20)
+
+monitor = IntervalMontior(radius=20, debug=True)
 workoutStats = WorkoutStats()
 rpm_data = []
-state = {'start_time': 0}
+
 
 @app.route('/')
 def index():
@@ -22,68 +22,19 @@ def index():
 @app.route('/rpm/<int:since>')
 def rpm_since(since):
     """ return the rpm data since a time, since is epoch time """
-    compileRpm(since)
+    data = monitor.get_current_workout()
     return jsonify(data)
 
 @app.route('/rpm/<float:since>')
 def rpm_since_float(since):
     """ Rpm since, but since is a float and includes microseconds """
-    compileRpm(since)
+    data = monitor.get_current_workout()
     return jsonify(data)
 
 def clear_data():
-    print("clearing rpm data");
+    """ Clear data """
     rpm_data = []
 
-def compileRpm(since):
-    last_time = 0
-    last_sec = 0
-    last_rpm = 0
-    history = monitor.get_history()
-    if len(history) > 0 and len(rpm_data) > 0:
-        last_time = rpm_data[-1]['time']
-        last_sec = math.floor(last_time)
-        if (history[-1] - last_time) > 1800:
-            clear_data()
-    elif len(history) > 0:
-        state['start_time'] = history[-1];
-    
-    #If the time gap between the last history is within a threshhold
-    #Loop over the seconds (or maybe minutes)
-    #Adding in data points of zero when we have no data
-    
-    for time in history:    
-        if last_time > 0:
-            rpm = 0
-            elapsed = time - last_time # Time since the last second, 
-            if (elapsed > 0):
-                rpm = 1 / elapsed * 60
-            curr_sec = math.floor(time)
-            if (curr_sec - last_sec) > 1:
-                while last_sec < curr_sec:
-                    rpm_data.append({"time": time - (curr_sec - last_sec), "rpm": rpm})
-                    last_sec += 1
-            rpm_data.append({"time": time, "rpm": rpm})
-            
-            last_rpm = rpm
-            last_sec = curr_sec
-            last_time = time
-        else:
-            last_sec = math.floor(time)
-            last_time = time
-            rpm_data.append({"time": time, "rpm": 0})
-        
-        data["rot_count"] += 1
-    
-    if (since is not None):
-        data["rpm_data"] = [a for a in rpm_data if a["time"] > since]
-    else:
-        data["rpm_data"] = rpm_data
-        
-    data["velocity"] = workoutStats.calculate_speed(last_rpm, 10)
-    
-    monitor.clear_history()
-    
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')

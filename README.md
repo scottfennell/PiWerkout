@@ -5,6 +5,8 @@ PiWerkout
 Quickstart
 ----------
 
+* install: `virtualenv --no-site-packages --distribute env && source env/bin/activate && pip install -r requirements.txt`
+
 * run the flask app via `run.sh`
 
 Add modules
