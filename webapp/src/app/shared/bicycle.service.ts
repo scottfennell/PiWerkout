@@ -10,6 +10,7 @@ import 'rxjs/add/operator/retryWhen';
 import 'rxjs/add/observable/interval';
 import 'rxjs/add/observable/timer';
 import 'rxjs/add/operator/scan';
+import 'rxjs/add/operator/share';
 
 @Injectable()
 export class BicycleService {

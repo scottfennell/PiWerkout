@@ -4,7 +4,7 @@ import { BicycleService, BicycleDataStats } from '../shared/bicycle.service';
 
 @Component({
   selector: 'my-home',
-  host: {class: 'router-layout'},
+  host: {class: 'srouter-layout'},
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
@@ -23,7 +23,6 @@ export class HomeComponent implements OnInit {
   }
 
   calcStats(stats: BicycleDataStats) {
-    console.log("Stats", stats, this);
     // this.mph = Math.round(2.23694 * lastData.velocity);
     // this.mps = Math.round(lastData.velocity);
     this.distance = stats.distance;

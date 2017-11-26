@@ -1,12 +1,7 @@
-<div fxFlexFill fxLayout="column">
-  <md-toolbar class='toolbar' color="primary" fxLayout="row">
-    <button md-button [routerLink]="['']"><md-icon>home</md-icon>Home</button>
-    <button md-button [routerLink]="['about']">About</button>
-  </md-toolbar>
-  <div class='main' fxFlex fxLayout="row">
-    <router-outlet></router-outlet>
-  </div>
-  <footer fxFlex="20px">
-    <a [href]="url">Webpack Angular 2 Starter</a>
-  </footer>
+<mat-toolbar class='toolbar' color="primary" fxLayout="row">
+  <button mat-button [routerLink]="['']"><mat-icon>home</mat-icon>Home</button>
+  <button mat-button [routerLink]="['about']">About</button>
+</mat-toolbar>
+<div class='main'>
+  <router-outlet></router-outlet>
 </div>

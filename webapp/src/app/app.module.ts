@@ -12,9 +12,8 @@ import { ConfigService } from './shared/config.service';
 import { routing } from './app.routing';
 
 
-import { MaterialModule } from '@angular/material';
+import { MatToolbarModule, MatButtonModule, MatCardModule, MatIconModule, MatGridListModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 
 import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
@@ -25,9 +24,13 @@ import { removeNgStyles, createNewHosts } from '@angularclass/hmr';
     HttpModule,
     FormsModule,
     routing,
-    MaterialModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatGridListModule,
     BrowserAnimationsModule,
-    FlexLayoutModule
   ],
   declarations: [
     AppComponent,

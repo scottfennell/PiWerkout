@@ -9,6 +9,10 @@ import { GaugeChart } from './gaugechart';
     selector: 'chart', // <my-app></my-app>
     template: '<div class="container" #chartContainer></div>',
     styles: [`
+        :host {
+            width: 100%;
+            height: 100%;
+        }
         .container {
             width: 100%;
             height: 100%;

@@ -1,5 +1,6 @@
 import 'core-js/client/shim';
 import 'reflect-metadata';
+// import 'aframe';
 require('zone.js/dist/zone');
 
 import 'ts-helpers';

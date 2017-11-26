@@ -60,6 +60,7 @@ export class GaugeChart {
   	
   	public configure(configuration) {
 		Object.apply(this.config, configuration);
+		console.log(this.container);
 		// this.config.width = this.container.clientWidth;
 		// this.config.height = this.container.clientHeight;//(this.container.clientWidth / 16) * 9;
 		let x = this.container.clientHeight * 1.77
@@ -86,7 +87,7 @@ export class GaugeChart {
 		this.tickData = d3.range(this.config.majorTicks).map(() => 1/this.config.majorTicks);
 		this.arc = d3.arc();
   		this.arc.innerRadius(this.r - this.config.ringWidth - this.config.ringInset)
-  		this.arc.outerRadius(this.r - this.config.ringInset)
+		  this.arc.outerRadius(this.r - this.config.ringInset)
   	}
   	
   	centerTranslation() {
