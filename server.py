@@ -9,7 +9,7 @@ CORS(app)
 app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app)
 
-monitor = IntervalMontior(radius=20, debug=True)
+monitor = IntervalMontior(radius=20, debug=False)
 workoutStats = WorkoutStats()
 rpm_data = []
 
