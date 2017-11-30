@@ -8,6 +8,7 @@ import random
 import threading
 from stats import WorkoutStats
 import gpiocrust
+from gpiocrust.pin_mode import PinMode
 
 class IntervalMontior(object):
     """
@@ -81,7 +82,7 @@ class IntervalMontior(object):
         """
         start interrupt
         """
-        with gpiocrust.Header(mode=gpiocrust.pin_mode.BCM) as header:
+        with gpiocrust.Header(mode=PinMode.BCM) as header:
             self.ioPin = gpiocrust.InputPin(self.sensor, callback=self.calculate_elapse,
                                edge=gpiocrust.edges.FALLING, bouncetime=200)
 
