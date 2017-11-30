@@ -7,7 +7,7 @@ import math
 import random
 import threading
 from stats import WorkoutStats
-import gpiocrust
+from gpiozero import Button
 
 class IntervalMontior(object):
     """
@@ -39,9 +39,9 @@ class IntervalMontior(object):
         Trigger io pin
         """
         if self.ioPin:
-            self.ioPin.trigger(True, gpiocrust.edges.FALLING)
+            self.calculate_elapse()
 
-    def calculate_elapse(self, channel):
+    def calculate_elapse(self):
         """
         Add another measurement
         """
@@ -81,12 +81,8 @@ class IntervalMontior(object):
         """
         start interrupt
         """
-        with gpiocrust.Header() as header:
-            self.ioPin = gpiocrust.InputPin(self.sensor, callback=self.calculate_elapse,
-                               edge=gpiocrust.edges.FALLING, bouncetime=200)
-
-        # GPIO.add_event_detect(self.sensor,
-                            #   GPIO.FALLING, callback=self.calculate_elapse, bouncetime=200)
+        self.ioPin = Button(self.sensor, bounce_time=0.2)
+        self.ioPin.when_pressed = self.calculate_elapse
 
     def set_interval(self, func, sec=0):
         """ Set interval to check for ....stuff """
