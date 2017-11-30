@@ -81,7 +81,7 @@ class IntervalMontior(object):
         """
         start interrupt
         """
-        with gpiocrust.Header() as header:
+        with gpiocrust.Header(mode=gpiocrust.pin_mode.BCM) as header:
             self.ioPin = gpiocrust.InputPin(self.sensor, callback=self.calculate_elapse,
                                edge=gpiocrust.edges.FALLING, bouncetime=200)
 
