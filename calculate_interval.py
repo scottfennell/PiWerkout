@@ -109,14 +109,17 @@ class IntervalMontior(object):
 
         if current_data_length > 0:
             last_time = rpm_data[-1]['time']
-            if (time.time() - last_time) > self.archive_timeout:
-                print("Resetting current workout data", last_time, time.time(), self.archive_timeout)
+            time_diff = time.time() - last_time
+            if time_diff > self.archive_timeout:
+                print("Resetting current workout data {0}, {1}, {2}".format(last_time, time.time(), self.archive_timeout))
                 self.current_workout = {
                     'rpm': 0,
                     'rot_count': 0,
                     'rpm_data': [],
                     'start_time': time.time()
                 }
+            else:
+                print("Not resetting workout, diff is only {0}".format(time_diff))
         else:
             self.current_workout = {
                 'rpm': 0,

@@ -1,0 +1,24 @@
+<h2>Got it</h2>
+<div class='center'>
+    <a-scene fog="type: exponential; color: #FFF; density: 0.06;">
+        <!-- <a-entity environment="preset: forest"></a-entity> -->
+        <!-- <a-sphere position="0 0 -5" radius="1.25" color="#00FF00" shadow></a-sphere> -->
+        <a-sky></a-sky>
+        <!-- Camera -->
+        <a-entity camera="userHeight: 1.6"
+                  universal-controls="movementEnabled: keyboard">
+        </a-entity>
+  
+        <!-- Ocean -->
+        <a-ocean color="#92E2E2" width="50" depth="50" density="40"></a-ocean>
+  
+        <!-- Pedestals -->
+        <a-cylinder radius="1" height="50" color="#39BB82" position="0 -24.5 0"></a-cylinder>
+        <a-cylinder radius="1" height="50" color="#39BB82" position="5 -24.5 0"></a-cylinder>
+        <a-cylinder radius="1" height="50" color="#39BB82" position="-5 -24.5 0"></a-cylinder>
+  
+        <!-- Lighting -->
+        <a-entity light="type: hemisphere; color: #AAA; groundColor: #000000; intensity: 0.9;"></a-entity>
+        <a-entity light="type: ambient; color: #DC8874; intensity: 0.5;"></a-entity>
+    </a-scene>
+</div>

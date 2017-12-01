@@ -1,6 +1,9 @@
+import 'aframe';
+import 'aframe-extras/dist/aframe-extras.min.js';
+import 'aframe-environment-component';
+
 import 'core-js/client/shim';
 import 'reflect-metadata';
-// import 'aframe';
 require('zone.js/dist/zone');
 
 import 'ts-helpers';
