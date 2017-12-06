@@ -1,16 +1,32 @@
-<h2>Got it</h2>
-<div class='center'>
+<div class='centers'>
     <a-scene fog="type: exponential; color: #FFF; density: 0.06;">
-        <!-- <a-entity environment="preset: forest"></a-entity> -->
+        <a-assets>
+            <a-asset-item id="blimp" src="/models/blimp.dae"></a-asset-item>
+        </a-assets>
+        <a-entity environment="preset: forest"></a-entity>
         <!-- <a-sphere position="0 0 -5" radius="1.25" color="#00FF00" shadow></a-sphere> -->
         <a-sky></a-sky>
         <!-- Camera -->
-        <a-entity camera="userHeight: 1.6"
-                  universal-controls="movementEnabled: keyboard">
+        <a-entity collada-model="/models/blimp.dae"
+            wasd-controls 
+            rotation="-90 90 0" 
+            position="0 10 0"
+            >
+            <a-entity position="-0.100 0 -1.5" rotation="0 0 -90">
+                <a-entity rotation="90 0 0">
+                    <a-entity camera="userHeight: 1.6;"
+                            position="0.108 -1.8 0.22"
+                            look-controls
+                            >
+                            <!-- universal-controls="movementEnabled: keyboard" -->
+                    </a-entity>
+                </a-entity>
+            </a-entity>
         </a-entity>
+        
   
         <!-- Ocean -->
-        <a-ocean color="#92E2E2" width="50" depth="50" density="40"></a-ocean>
+        <!-- <a-ocean color="#92E2E2" width="50" depth="50" density="40"></a-ocean> -->
   
         <!-- Pedestals -->
         <a-cylinder radius="1" height="50" color="#39BB82" position="0 -24.5 0"></a-cylinder>
