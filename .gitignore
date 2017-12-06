@@ -3,3 +3,4 @@
 /webapp/node-modules
 /.vscode
 /env
+.vscode/settings.json

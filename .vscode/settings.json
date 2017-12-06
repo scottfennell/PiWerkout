@@ -1,5 +1,8 @@
 // Place your settings in this file to overwrite default and user settings.
 {
     "editor.rulers": [80,100],
-    "python.pythonPath":"./env/bin/python"
+    "python.pythonPath": "./env/bin/python",
+    "terminal.integrated.env.windows": {
+        "PATH": "C:\\Users\\still\\.platformio\\penv\\Scripts;C:\\Program Files\\Oculus\\Support\\oculus-runtime;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files (x86)\\Git\\cmd;C:\\Program Files (x86)\\GtkSharp\\2.12\\bin;%SystemRoot%\\system32;%SystemRoot%;%SystemRoot%\\System32\\Wbem;%SYSTEMROOT%\\System32\\WindowsPowerShell\\v1.0\\;C:\\Users\\still\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\still\\AppData\\Local\\atom\\bin;C:\\Program Files (x86)\\Microsoft VS Code\\bin;C:\\Users\\still\\AppData\\Roaming\\npm;C:\\Program Files (x86)\\git\\cmd;;%USERPROFILE%\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\Oculus\\Support\\oculus-runtime;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\PuTTY\\;C:\\Program Files\\nodejs\\;C:\\Program Files (x86)\\Git\\cmd;C:\\Program Files (x86)\\GtkSharp\\2.12\\bin;%SystemRoot%\\system32;%SystemRoot%;%SystemRoot%\\System32\\Wbem;%SYSTEMROOT%\\System32\\WindowsPowerShell\\v1.0\\;C:\\Users\\still\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\still\\AppData\\Local\\atom\\bin;C:\\Program Files (x86)\\Microsoft VS Code\\bin;C:\\Users\\still\\AppData\\Roaming\\npm;C:\\Program Files (x86)\\git\\cmd;;%USERPROFILE%\\AppData\\Local\\Microsoft\\WindowsApps"
+    }
 }
