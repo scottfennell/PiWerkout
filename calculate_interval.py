@@ -96,7 +96,7 @@ class IntervalMontior(object):
         tmr = threading.Timer(setsec, func_wrapper)
         tmr.start()
         return tmr
-
+fvdxs
     def check_reset_current_workout(self):
         """
         Check for an elapsed time and clear data if it has been passed the elapsed
